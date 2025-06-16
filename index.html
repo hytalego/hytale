@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hytale Epic Landing Page</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #000 url('https://www.transparenttextures.com/patterns/black-felt.png') repeat;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Баннер "Сайт в разработке" */
+    .notice-banner {
+      position: fixed;
+      top: -60px;
+      left: 0;
+      width: 100%;
+      background: #ff4444;
+      color: #fff;
+      padding: 15px 40px 15px 20px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+      font-weight: bold;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      z-index: 1000;
+      animation: slideDown 1s forwards ease-out;
+    }
+    .notice-banner.hidden {
+      animation: slideUp 0.5s forwards ease-in;
+    }
+    @keyframes slideDown { from { top: -60px; } to { top: 0; } }
+    @keyframes slideUp   { from { top: 0; } to { top: -60px; } }
+
+    .close-btn {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* Основной контент */
+    header {
+      background: linear-gradient(to right, #0c1b2e, #111);
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 0 25px #0ff8;
+      border-bottom: 3px solid #0ff;
+    }
+    header img {
+      height: 120px;
+      filter: drop-shadow(0 0 20px #0ff);
+      transition: transform .3s;
+    }
+    header img:hover {
+      transform: scale(1.05);
+    }
+
+    .hero {
+      text-align: center;
+      padding: 80px 20px;
+      background: url('https://hytale.com/static/images/home/header.jpg') no-repeat center/cover;
+      animation: fadeIn 2s ease-out;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin: 0 0 10px;
+      animation: slideTitle 1s ease-out;
+    }
+    @keyframes slideTitle { from { transform: translateY(-30px); opacity:0 } to { transform: translateY(0); opacity:1 } }
+
+    .hero p {
+      font-size: 1.5rem;
+      animation: fadeInUp 1.5s ease-out;
+    }
+    @keyframes fadeInUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
+
+    .button-group {
+      margin: 30px 0;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .button {
+      background: #0ff;
+      color: #000;
+      padding: 12px 24px;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      animation: pulse 2s infinite ease-in-out;
+      box-shadow: 0 4px 10px rgba(0,255,255,0.3);
+      transition: background .3s, transform .2s;
+    }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.03)} }
+    .button:hover {
+      background: #0cc;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,255,255,0.5);
+    }
+
+    .video-section {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .video-section iframe {
+      width: 90%;
+      max-width: 800px;
+      height: 450px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #0ff6;
+    }
+
+    .features, .news-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 60px 20px;
+    }
+    .feature, .news-item {
+      background: #222;
+      border-radius: 15px;
+      width: 280px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 15px #0ff5;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .feature:hover, .news-item:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px #0ff;
+    }
+    .feature h3, .news-item h3 {
+      font-family: 'Orbitron';
+      margin-bottom: 10px;
+    }
+
+    .download-section {
+      background: #111;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 500;
+    }
+    .modal-content {
+      background: #222;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      position: relative;
+      box-shadow: 0 0 20px #0ff;
+    }
+    .modal-content .close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+    }
+
+    /* Invite popup */
+    .invite-popup {
+      position: fixed;
+      bottom: -160px;
+      right: 20px;
+      width: 260px;
+      background: #111;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.3);
+      color: #fff;
+      text-align: center;
+      opacity: 0;
+      transition: bottom 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      z-index: 900;
+    }
+    .invite-popup.show {
+      bottom: 20px;
+      opacity: 1;
+    }
+    .invite-popup h4 {
+      margin: 0 0 10px;
+      font-family: 'Orbitron';
+    }
+    .invite-popup p {
+      margin: 0 0 15px;
+      font-size: 0.9rem;
+    }
+    .invite-popup a {
+      background: #0ff;
+      color: #000;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background .3s;
+    }
+    .invite-popup a:hover {
+      background: #0cc;
+    }
+
+    footer {
+      background: #111;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #aaa;
+    }
+  </style>
+  <script>
+    function scrollToDownload() {
+      document.getElementById('download').scrollIntoView({ behavior: 'smooth' });
+    }
+    function scrollToNews() {
+      document.querySelector('.news-section').scrollIntoView({ behavior: 'smooth' });
+    }
+    function showVersions() {
+      document.getElementById('version-selector').style.display = document.getElementById('os').value ? 'block' : 'none';
+    }
+    function openModal() {
+      document.getElementById('newsModal').style.display = 'block';
+    }
+    function closeModal() {
+      document.getElementById('newsModal').style.display = 'none';
+    }
+    function closeNotice() {
+      const n = document.getElementById('notice');
+      n.classList.add('hidden');
+      setTimeout(() => n.style.display = 'none', 600);
+    }
+    function toggleInvite(show) {
+      document.getElementById('invitePopup').classList.toggle('show', show);
+    }
+    window.onload = () => {
+      if (!localStorage.getItem('visited')) {
+        document.getElementById('notice').style.display = 'flex';
+        localStorage.setItem('visited', 'true');
+      }
+      setInterval(() => {
+        toggleInvite(true);
+        setTimeout(() => toggleInvite(false), 8000);
+      }, 20000);
+    };
+  </script>
+</head>
+<body>
+
+  <!-- Баннер -->
+  <div id="notice" class="notice-banner" style="display:none;">
+    ВНИМАНИЕ: САЙТ В РАЗРАБОТКЕ
+    <button class="close-btn" aria-label="Закрыть" onclick="closeNotice()">×</button>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <img src="https://www.hytale.com/static/images/logo.png" alt="Hytale Logo" />
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <h1>Добро пожаловать в Hytale</h1>
+    <p>Исследуй мир приключений, магии и бесконечной креативности!</p>
+    <div class="button-group">
+      <button class="button" onclick="scrollToDownload()">Скачать</button>
+      <a class="button" href="https://discord.gg/hq2Vseee5K" target="_blank">Присоединиться</a>
+      <button class="button" onclick="scrollToNews()">Новости</button>
+    </div>
+  </section>
+
+  <!-- Video -->
+  <section class="video-section">
+    <h2>🎬 Официальный трейлер</h2>
+    <iframe src="https://www.youtube.com/embed/o77MzDQT1cg" frameborder="0" allowfullscreen></iframe>
+  </section>
+
+  <!-- News -->
+  <section class="news-section">
+    <h2 style="width:100%; text-align:center; font-family:'Orbitron'; font-size:2rem;">📰 Новости</h2>
+    <div class="news-item">
+      <h3>Ждём Hytale!</h3>
+      <p>Игра скоро выйдет, и мы все в ожидании!</p>
+      <button class="button" onclick="openModal()">Подробнее</button>
+    </div>
+  </section>
+
+  <!-- News Modal -->
+  <div id="newsModal" class="modal">
+    <div class="modal-content">
+      <button class="close" aria-label="Закрыть" onclick="closeModal()">×</button>
+      <h2>Ждём игру!</h2>
+      <p>Hytale всё ближе к выходу. Разработчики делятся подробностями и тизерами.</p>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="feature"><h3>🌍 Огромный мир</h3><p>Процедурно-генерируемые биомы и подземелья ждут тебя!</p></div>
+    <div class="feature"><h3>⚔️ Эпичные битвы</h3><p>Сразись с мобами, боссами и игроками!</p></div>
+    <div class="feature"><h3>🎮 Моды и скрипты</h3><p>Настраивай игру под себя!</p></div>
+    <div class="feature"><h3>🛠️ Креативность</h3><p>Строй и твори свой мир!</p></div>
+  </section>
+
+  <!-- Download -->
+  <section id="download" class="download-section">
+    <h2>⬇️ Скачать Hytale</h2>
+    <div class="download-select">
+      <label for="os">Выберите ОС:</label>
+      <select id="os" onchange="showVersions()">
+        <option value="">-- Выбрать --</option>
+        <option value="windows">Windows</option>
+        <option value="mac">macOS</option>
+        <option value="linux">Linux</option>
+      </select>
+      <div id="version-selector" style="display:none">
+        <label for="version">Версия:</label>
+        <select id="version">
+          <option>Бета 1.0</option>
+          <option>Бета 2.0</option>
+          <option>Релиз 1.0 (когда выйдет)</option>
+        </select>
+        <br /><br />
+        <button class="button">Скачать</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Invite Popup -->
+  <div id="invitePopup" class="invite-popup">
+    <h4>🎉 Заходите в наш сервер!</h4>
+    <p>Станьте частью нашего сообщества — будем рады!</p>
+    <a href="https://discord.gg/hq2Vseee5K" target="_blank">Войти в Discord</a>
+  </div>
+
+  <footer>
+    &copy; 2025 Hytale Fan Page. Все права неофициального сайта принадлежат Hypixel Studios.
+  </footer>
+
+</body>
+</html>
